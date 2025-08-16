@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Sign up · DailyNest{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Create an account</h1>
+<form method="post" class="space-y-4 max-w-md">
+  {{ form.hidden_tag() }}
+  <div>
+    {{ form.name.label(class_="block text-sm mb-1") }}
+    {{ form.name(class_="w-full border rounded-lg p-2") }}
+  </div>
+  <div>
+    {{ form.email.label(class_="block text-sm mb-1") }}
+    {{ form.email(class_="w-full border rounded-lg p-2") }}
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      {{ form.password.label(class_="block text-sm mb-1") }}
+      {{ form.password(class_="w-full border rounded-lg p-2") }}
+    </div>
+    <div>
+      {{ form.confirm.label(class_="block text-sm mb-1") }}
+      {{ form.confirm(class_="w-full border rounded-lg p-2") }}
+    </div>
+  </div>
+  <button class="px-4 py-2 rounded-lg bg-indigo-600 text-white">Create account</button>
+</form>
+<p class="mt-4 text-sm">Already have an account? <a href="{{ url_for('login') }}" class="underline">Login</a></p>
+{% endblock %}

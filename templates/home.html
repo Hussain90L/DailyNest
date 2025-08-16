@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Public Feed · DailyNest{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Public Feed</h1>
+<div id="feed" class="grid gap-4"></div>
+{% endblock %}
+{% block scripts %}
+<script>
+fetch("{{ url_for('api_feed') }}").then(r=>r.json()).then(items=>{
+  const feed = document.getElementById('feed');
+  if (items.length === 0) {
+    feed.innerHTML = '<div class="p-4 border rounded-lg bg-white">No public activities yet.</div>';
+    return;
+  }
+  feed.innerHTML = items.map(a => `
+    <div class="p-4 border rounded-xl bg-white shadow-sm">
+      <div class="flex items-center justify-between">
+        <a href="/u/${a.id}" class="font-semibold">${a.user}</a>
+        <span class="text-xs text-gray-500">${new Date(a.created_at).toLocaleString()}</span>
+      </div>
+      <h3 class="text-lg font-medium mt-1">${a.title}</h3>
+      ${a.description ? `<p class="mt-1 text-gray-700 whitespace-pre-wrap">${a.description}</p>` : ''}
+      <div class="mt-2 text-sm text-gray-600 flex gap-3 flex-wrap">
+        ${a.mood ? `<span class="px-2 py-0.5 rounded-full bg-gray-100">Mood: ${a.mood}</span>`:''}
+        ${a.category ? `<span class="px-2 py-0.5 rounded-full bg-gray-100">#${a.category}</span>`:''}
+        ${a.location_text ? `<span class="px-2 py-0.5 rounded-full bg-gray-100">${a.location_text}</span>`:''}
+        ${(a.lat && a.lng) ? `<a class="underline" target="_blank" href="https://maps.google.com/?q=${a.lat},${a.lng}">View on map</a>`:''}
+      </div>
+    </div>
+  `).join('');
+});
+</script>
+{% endblock %}

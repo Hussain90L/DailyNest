@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My Activities · DailyNest{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">My Activities</h1>
+<div class="grid gap-4">
+  {% for a in activities %}
+  <div class="p-4 border rounded-xl bg-white">
+    <div class="flex items-center justify-between">
+      <div class="font-semibold">{{ a.title }}</div>
+      <div class="text-xs text-gray-500">{{ a.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+    </div>
+    {% if a.description %}<p class="mt-1 text-gray-700 whitespace-pre-wrap">{{ a.description }}</p>{% endif %}
+    <div class="mt-2 text-sm text-gray-600 flex gap-3 flex-wrap">
+      {% if a.mood %}<span class="px-2 py-0.5 rounded-full bg-gray-100">Mood: {{ a.mood }}</span>{% endif %}
+      {% if a.category %}<span class="px-2 py-0.5 rounded-full bg-gray-100">#{{ a.category }}</span>{% endif %}
+      {% if a.location_text %}<span class="px-2 py-0.5 rounded-full bg-gray-100">{{ a.location_text }}</span>{% endif %}
+      {% if a.latitude and a.longitude %}<a class="underline" target="_blank" href="https://maps.google.com/?q={{ a.latitude }},{{ a.longitude }}">View on map</a>{% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="p-4 border rounded-xl bg-white">You haven't posted anything yet.</div>
+  {% endfor %}
+</div>
+{% endblock %}
